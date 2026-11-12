@@ -24,3 +24,7 @@ Android 11 is API 30 and is supported. Android 11 does not provide the same publ
 5. Phase 5: settings, backup/restore and performance polish.
 
 This is an early foundation, not a finished production launcher yet.
+
+
+## Build
+Pushes to `main` automatically build the debug APK with GitHub Actions. The artifact is named `GlassOS-debug-apk`.
