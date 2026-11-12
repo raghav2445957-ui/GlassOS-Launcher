@@ -147,7 +147,7 @@ private fun AppTile(app: LaunchableApp, onClick: () -> Unit) {
     ) {
         if (icon != null) {
             androidx.compose.foundation.Image(
-                bitmap = androidx.compose.ui.graphics.asImageBitmap(icon.toBitmap()),
+                bitmap = icon.toBitmap().asImageBitmap(),
                 contentDescription = app.label,
                 modifier = Modifier.size(48.dp)
             )
