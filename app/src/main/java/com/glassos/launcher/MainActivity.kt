@@ -104,17 +104,6 @@ private fun GlassOS() {
     Box(
         Modifier.fillMaxSize()
             .background(Brush.verticalGradient(listOf(Color(0xFF111827), Color(0xFF25213D), Color(0xFF101522))))
-            .pointerInput(drawerOpen) {
-                detectVerticalDragGestures(
-                    onVerticalDrag = { _, amount -> dragAmount += amount },
-                    onDragEnd = {
-                        if (!drawerOpen && dragAmount < -45f) drawerOpen = true
-                        else if (drawerOpen && dragAmount > 45f) { drawerOpen = false; search = "" }
-                        dragAmount = 0f
-                    },
-                    onDragCancel = { dragAmount = 0f }
-                )
-            }
     ) {
         // Soft ambient light, deliberately subtle to keep icons readable.
         Box(Modifier.fillMaxWidth().height(360.dp).align(Alignment.TopCenter)
@@ -123,7 +112,8 @@ private fun GlassOS() {
             Row(Modifier.fillMaxWidth().padding(top = 12.dp), horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically) {
                 Column {
-                    Text("THURSDAY", color = Color.White.copy(.62f), fontSize = 10.sp, letterSpacing = 2.4.sp, fontWeight = FontWeight.Bold)
+                    Text(SimpleDateFormat("EEEE", Locale.getDefault()).format(now).uppercase(Locale.getDefault()),
+                    color = Color.White.copy(.62f), fontSize = 10.sp, letterSpacing = 2.4.sp, fontWeight = FontWeight.Bold)
                     Text(date, color = Color.White.copy(.9f), fontSize = 13.sp)
                 }
                 Row(verticalAlignment = Alignment.CenterVertically) {
@@ -133,7 +123,16 @@ private fun GlassOS() {
                 }
             }
 
-            AnimatedVisibility(visible = !drawerOpen, modifier = Modifier.weight(1f)) {
+            AnimatedVisibility(visible = !drawerOpen, modifier = Modifier.weight(1f).pointerInput(drawerOpen) {
+                detectVerticalDragGestures(
+                    onVerticalDrag = { _, amount -> dragAmount += amount },
+                    onDragEnd = {
+                        if (dragAmount < -45f) drawerOpen = true
+                        dragAmount = 0f
+                    },
+                    onDragCancel = { dragAmount = 0f }
+                )
+            }) {
                 Column(Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally) {
                     Spacer(Modifier.height(38.dp))
                     Text(clock, color = Color.White, fontSize = 76.sp, lineHeight = 82.sp,
